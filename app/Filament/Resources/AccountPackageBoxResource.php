@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -29,14 +30,6 @@ class AccountPackageBoxResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
                 Forms\Components\Select::make('account_id')
                     ->options(Account::all()->pluck('name', 'id'))
                     ->live()
@@ -58,6 +51,16 @@ class AccountPackageBoxResource extends Resource
                 Forms\Components\TextInput::make('erp_id'),
                 Forms\Components\TextInput::make('external_id'),
                 Forms\Components\TextInput::make('external_name')
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name'),
+                TextColumn::make('account_package.erp_id'),
+                TextColumn::make('account_package.account.name')->badge(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

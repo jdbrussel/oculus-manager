@@ -6,6 +6,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ class AccountPackageBoxesRelationManager extends RelationManager
     public static function getBadge(Model $ownerRecord, string $pageClass): string
     {
         $count = $ownerRecord->account_package_boxes->count();
-        if ($count > 0) {code
+        if ($count > 0) {
             return $count;
         }
         return false;
@@ -45,6 +46,10 @@ class AccountPackageBoxesRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+//                TextColumn::make('account_package_items_count')
+//                    ->counts('account_package_items')
+//                    ->label(__('Num Items'))
+//                    ->badge(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()

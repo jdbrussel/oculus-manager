@@ -6,6 +6,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,10 @@ class AccountPackageSealsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                TextColumn::make('account_package_items_count')
+                    ->counts('account_package_items')
+                    ->label(__('Num Items'))
+                    ->badge(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()

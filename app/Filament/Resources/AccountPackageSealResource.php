@@ -2,13 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AccountPackageResource\RelationManagers\AccountPackageItemsRelationManager;
 use App\Filament\Resources\AccountPackageSealResource\Pages;
 use App\Filament\Resources\AccountPackageSealResource\RelationManagers;
 use App\Models\Account;
 use App\Models\AccountPackage;
 use App\Models\AccountPackageSeal;
-use Faker\Provider\Text;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,23 +16,16 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class AccountPackageSealResource extends Resource
 {
     protected static ?string $model = AccountPackageSeal::class;
-
-   // protected static ?string $navigationParentItem = 'Packages';
-
     protected static ?string $navigationGroup = 'Packages';
     protected static ?int $navigationSort = 1;
-
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
-
         return $form
             ->schema([
                 Forms\Components\Select::make('account_id')
@@ -57,13 +48,12 @@ class AccountPackageSealResource extends Resource
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\TextInput::make('erp_id'),
                 Forms\Components\TextInput::make('external_id'),
-                Forms\Components\TextInput::make('external_name')
+                Forms\Components\TextInput::make('external_name'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
-
         return $table
             ->columns([
                 TextColumn::make('name'),
