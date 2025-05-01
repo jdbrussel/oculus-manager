@@ -41,8 +41,8 @@ class AccountPackageItem extends Model
 
     protected $casts = [
         'environment' => EnvironmentEnum::class,
-        'allocation' => 'json',
         'type' => TypeEnum::class,
+        'allocation' => 'json',
     ];
 
     public function getExternalIdAttribute($value) {

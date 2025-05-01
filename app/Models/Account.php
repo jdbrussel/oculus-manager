@@ -35,7 +35,7 @@ class Account extends Model
     protected $casts = [
         'environment' => EnvironmentEnum::class,
         'erp_status' => ErpStatusEnum::class,
-        'calloff_article_import_config' => 'json',
+        'config' => 'json',
     ];
 
     /*

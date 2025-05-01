@@ -4,6 +4,8 @@ namespace App\Filament\Resources\AccountResource\RelationManagers;
 
 use App\component\Connectors\Oculus\OculusSyncher;
 use App\Models\AccountPackage;
+use Carbon\Carbon;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -99,10 +101,21 @@ class AccountPackagesRelationManager extends RelationManager
                 ]),
             ])
             ->modifyQueryUsing(function (Builder $query) {
+
+                $ACCOUNT = $this->getOwnerRecord();
+                $MODULE = $ACCOUNT->modules->where('slug', 'package-manager')->first();
+                $DAYS_AHEAD = $MODULE->config['packages_days_ahead'] ?? 8;
+
                 $query
                     ->where('environment', $this->getOwnerRecord()->environment)
-                    ->orderBy('id', 'DESC')
+                    ->where(
+                        'scheduled_delivery_datetime' ,
+                        '<=' ,
+                        Carbon::now()->addDays($DAYS_AHEAD)->timestamp
+                    )
+                    ->orderBy('scheduled_delivery_datetime', 'DESC')
                     ->withoutGlobalScopes([SoftDeletingScope::class]);
+
                 return $query;
             });
     }

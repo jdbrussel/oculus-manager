@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('erp_id')->nullable();
             $table->enum('environment', ['production', 'development'])->nullable();
             $table->string('erp_status');
-            $table->json('calloff_article_import_config')->nullable();
+
+            $table->jsonb('config')->nullable();
+
             $table->timestamp('synched_at')->nullable();
             $table->foreignId('synched_at_user')->nullable()->index();
             $table->foreignId('created_by_user')->nullable()->index();

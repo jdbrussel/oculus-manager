@@ -1243,6 +1243,9 @@ class OculusSyncher extends Oculus
                     [ 'key' => 'NaamOndernmr' ],
                 ],
             ],
+            'formula' => [
+                'keys' => false
+            ],
             'rayon' => [
                 'keys' => [
                     [
@@ -1307,19 +1310,20 @@ class OculusSyncher extends Oculus
             'external_id' => true,
         ];
 
-//        dd($account_package);
-//        dd($account_package_item);
-
         $allocation = [
             'error' => false,
+            'data' => []
         ];
 
         foreach($erp_results as $erp_result) {
 
             $data = self::translateData($erp_result, $import_fields, [], true);
             $data = self::checkRequiredData($required_fields, $data);
-            $data = self::getAllocationType($account_package, $account_package_item, $data);
 
+            $allocation['data'][] = $data;
+            continue;
+
+            $data = self::getAllocationType($account_package, $account_package_item, $data);
             $allocation_keys = $data['allocation_type']->getAllocationArrayKeys();
             $level_1 = array_key_exists(0, $allocation_keys) ? $allocation_keys[0] : false;
             $level_2 = array_key_exists(1, $allocation_keys) ? $allocation_keys[1] : false;
@@ -1337,10 +1341,8 @@ class OculusSyncher extends Oculus
                 $allocation[$level_1][$level_2]["{$data['external_id']}"] = $data;
             }
         }
-
+        dd($allocation);
         return $allocation;
     }
-
-
 
 }

@@ -22,11 +22,11 @@ return new class extends Migration
 
             $table->integer('type')->default(1);
             $table->integer('num_versions')->default(1);
-            $table->integer('num_per_version')->default(1);
+            $table->integer('num_per_version')->nullable();
 
-            $table->integer('quantity')->default(0);
-            $table->integer('quantity_reserved')->default(0);
-            $table->integer('quantity_stock')->default(0);
+            $table->integer('quantity')->default(0)->nullable();
+            $table->integer('quantity_reserved')->default(0)->nullable();
+            $table->integer('quantity_stock')->default(0)->nullable();
             $table->jsonb('allocation')->nullable();
             $table->enum('environment', ['production', 'development'])->nullable();
             $table->timestamp('synched_at')->nullable();

@@ -51,6 +51,7 @@ class AccountPackage extends Model
         'environment' => EnvironmentEnum::class,
         'type' => TypeEnum::class,
         'status' => StatusEnum::class,
+        'config' => 'json'
     ];
 
     public function getStatusAttribute() : StatusEnum

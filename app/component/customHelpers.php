@@ -68,6 +68,8 @@ trait customHelpers
             $num_per_version = 1;
         }
 
+        $type_enum = Enums\AccountPackageItem\TypeEnum::ITEM;
+
         if($num_versions === 1 && $num_per_version === 1) {
             $type_enum = Enums\AccountPackageItem\TypeEnum::ITEM;
         }
@@ -130,14 +132,14 @@ trait customHelpers
 
                     }
                 } else {
-                    $data[$key] = false;
+                    $data[$key] = null;
                     continue;
                 }
             }
 
 
             if(!$requested_keys || empty($requested_keys)) {
-                $data[$key] = false;
+                $data[$key] = null;
                 continue;
             }
             else {
@@ -156,7 +158,7 @@ trait customHelpers
             }
 
             if(empty($results)) {
-                $data[$key] = false;
+                $data[$key] = null;
                 continue;
             }
 

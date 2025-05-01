@@ -2,27 +2,26 @@
 
 namespace App\Enums;
 
-use Couchbase\GetOptions;
 use Filament\Support\Contracts\HasLabel;
 
-enum EnvironmentEnum: string implements HasLabel
+enum ModulesEnum: string implements HasLabel
 {
-    case PROD = 'production';
-    case DEV = 'development';
+    case PACKAGEMANAGER = 'package-manager';
+    case STOCKMANAGER = 'stock-manager';
 
     public function getLabel() : string
     {
         return match($this) {
-            self::PROD => __('Production'),
-            self::DEV => __('Development'),
+            self::PACKAGEMANAGER => __('Package Manager'),
+            self::STOCKMANAGER => __('Stock Manager'),
         };
     }
 
     public function getIcon() : string
     {
         return match($this) {
-            self::PROD => 'heroicon-o-globe-alt',
-            self::DEV => 'heroicon-o-beaker',
+            self::PACKAGEMANAGER => 'heroicon-o-globe-alt',
+            self::STOCKMANAGER => 'heroicon-o-beaker',
         };
     }
 

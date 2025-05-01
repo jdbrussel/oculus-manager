@@ -20,6 +20,13 @@ return new class extends Migration
             $table->string('external_id')->nullable();
             $table->string('external_name')->nullable();
             $table->integer('in_stock')->default(0);
+
+            $table->integer('min_stock')->nullable();
+            $table->timestamp('online')->nullable();
+            $table->timestamp('offline')->nullable();
+            $table->string('campagne_manager')->nullable();
+            $table->string('external_project_manager')->nullable();
+
             $table->enum('environment', ['production', 'development'])->nullable();
             $table->timestamp('synched_at')->nullable();
             $table->foreignId('synched_at_user')->nullable()->index();

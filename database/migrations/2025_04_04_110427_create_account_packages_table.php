@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('edition')->nullable();
             $table->string('type')->nullable();
 
+            $table->jsonb('config')->nullable();
+
             $table->timestamp('order_datetime_from')->nullable();
             $table->timestamp('order_datetime_until')->nullable();
 

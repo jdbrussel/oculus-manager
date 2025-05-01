@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ModulesEnum;
 use App\Models\Account;
 use App\Models\Client;
 use App\Models\Module;
@@ -32,24 +33,67 @@ class DatabaseSeeder extends Seeder
             'created_by_user' => $admin->id,
         ]);
 
-        $package_module = Module::factory()->create([
-            'name' => 'Pakket Manager',
-            'slug' => 'package-manager',
-            'created_by_user' => $admin->id,
-        ]);
-
-        $stock_module = Module::factory()->create([
-            'name' => 'Stock Manager',
-            'slug' => 'stock-manager',
-            'created_by_user' => $admin->id,
-        ]);
-
-        $calloff_article_import_config = [
-            'spreadsheet_id' => '1Dp8jN1iScI1pGi0dEvG5uFmQlcYspXgsfQLSs3ZYD8Q',
-            'sheet_index' => 1,
-            'external_connector_key' => 'Artikelnummer',
-            'internal_connector_key' => 'external_id'
+        $config = [];
+        $config['package-manager'] = [
+            'packages_days_ahead' => 14
         ];
+
+        $modules = [];
+        foreach(ModulesEnum::cases() as $module) {
+            $modules[] = Module::factory()->create([
+                'name' => $module->getLabel(),
+                'slug' => $module->value,
+                'config' => $config[$module->value] ?? null,
+                'created_by_user' => $admin->id,
+            ]);
+        }
+
+        $config = [
+            'calloff_articles' => [
+                'external_synchronization' => [
+                    'google_sheets' => [
+                        'spreadsheet_id' => '1Dp8jN1iScI1pGi0dEvG5uFmQlcYspXgsfQLSs3ZYD8Q',
+                        'sheet_index' => 1,
+                        'external_connector_key' => 'Artikelnummer',
+                        'internal_connector_key' => 'external_id',
+                        'import_fields' => [
+                            'external_name' => [
+                                'keys' => [
+                                    [ 'key' => 'Naam' ],
+                                ],
+                            ],
+                            'min_stock' => [
+                                'keys' => [
+                                    ['key' => 'IJzeren voorraad']
+                                ]
+                            ],
+                            'online' => [
+                                'keys' => [
+                                    ['key' => 'Online datum']
+                                ]
+                            ],
+                            'offline' => [
+                                'keys' => [
+                                    ['key' => 'Offline datum"']
+                                ]
+                            ],
+                            'campagne_manager' => [
+                                'keys' => [
+                                    ['key' => 'Jumbo CM']
+                                ]
+                            ],
+                            'external_project_manager' => [
+                                'keys' => [
+                                    ['key' => 'PM HH Global']
+                                ]
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+
 
         $jumbo = Account::factory()->create([
             'client_id' => $bek->id,
@@ -57,12 +101,15 @@ class DatabaseSeeder extends Seeder
             'slug' => 'jumbo',
             'erp_id' => '631511',
             'environment' => 'development',
-            'calloff_article_import_config' => $calloff_article_import_config,
+            'config' => $config,
             'erp_status' => '200',
             'created_by_user' => $admin->id
         ]);
 
-        $jumbo->modules()->attach($package_module);
+        foreach($modules as $module) {
+            $jumbo->modules()->attach($module);
+        }
+
         $bek->users()->attach($admin);
 
         $ddj = Client::factory()->create([
@@ -81,6 +128,10 @@ class DatabaseSeeder extends Seeder
             'erp_status' => '200',
             'created_by_user' => $admin->id
         ]);
+
+        foreach($modules as $module) {
+            $coop->modules()->attach($module);
+        }
 
         $ddj->users()->attach($admin);
     }

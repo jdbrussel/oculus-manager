@@ -60,13 +60,17 @@ class AccountCalloffArticlesRelationManager extends RelationManager
                 Tables\Filters\TrashedFilter::make()
             ])
             ->headerActions([
+
                 Tables\Actions\Action::make('google_synchronize')
                     ->label(__('Synch met Google'))
                     ->color('google')
                     ->icon('heroicon-o-arrow-path-rounded-square')
-                    ->requiresConfirmation()
+                    ->requiresConfirmation(false)
                     ->action(function() {
                         GoogleSheetsSyncher::synchAccountCalloffArticles($this->getOwnerRecord());
+                    })
+                    ->visible(function() {
+                        return array_key_exists('google_sheets', $this->getOwnerRecord()->config['calloff_articles']['external_synchronization']);
                     }),
                 Tables\Actions\Action::make('erp_synchronize')
                     ->label(__('Synch met Oculus'))

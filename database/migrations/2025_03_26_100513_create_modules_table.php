@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->jsonb('config')->nullable();
             $table->foreignId('created_by_user')->nullable()->index();
             $table->foreignId('updated_by_user')->nullable()->index();
             $table->timestamps();

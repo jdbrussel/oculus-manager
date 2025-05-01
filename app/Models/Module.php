@@ -9,14 +9,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Module extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'name',
         'slug',
+        'config',
         'created_by_user',
         'updated_by_user'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'config' => 'json'
+        ];
+    }
 
     /*
      * Accounts

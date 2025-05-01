@@ -10,6 +10,7 @@ use App\Filament\Resources\AccountPackageResource\Widgets\AccountPackageOverview
 use App\Filament\Resources\AccountPackageResource\Widgets\AccountPackageWidget;
 use App\Models\Account;
 use App\Models\AccountPackage;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,7 +21,7 @@ use Filament\Tables\Table;
 class AccountPackageResource extends Resource
 {
     protected static ?string $model = AccountPackage::class;
-    protected static ?string $navigationParentItem = 'Accounts';
+    protected static ?string $navigationParentItem = 'Accountssd';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
 
@@ -88,9 +89,23 @@ class AccountPackageResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('erp_id')->label(__('erp_id'))->searchable()->sortable(),
-                TextColumn::make('account.name')->label(__('account'))->sortable(),
+                TextColumn::make('erp_id')
+                    ->label(__('erp_id'))
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('account.slug')
+                    ->label(__('account'))
+                    ->badge()
+                    ->sortable(),
+                TextColumn::make('environment')
+                    ->label(__('environment'))
+                    ->badge()
+                    ->sortable(),
                 TextColumn::make('full_name')->label(__('Omschrijving')),
+                TextColumn::make('scheduled_delivery_datetime')
+                    ->dateTime('d-m-Y H:i')->suffix(' uur')
+                    ->label(__('Delivery Date')),
+                Tables\Columns\TextColumn::make('status')->searchable()->sortable(),
                 TextColumn::make('account_package_items_count')
                     ->badge()
                     ->counts('account_package_items')
@@ -106,7 +121,17 @@ class AccountPackageResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
             ])->modifyQueryUsing(function ($query) {
-                return $query->whereRelation('account', 'deleted_at', null);
+
+                $query->where(
+                    'scheduled_delivery_datetime' ,
+                    '<=' ,
+                    Carbon::now()->addDays(14)->timestamp
+                )
+                ->orderBy(
+                    'scheduled_delivery_datetime',
+                    'DESC'
+                );
+                return $query;
             });
     }
 
