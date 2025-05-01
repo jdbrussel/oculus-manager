@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AccountPackageResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -39,6 +40,10 @@ class AccountPackageSealsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Select::make('account_package_items')
+                    ->relationship('account_package_items', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 

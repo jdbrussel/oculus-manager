@@ -17,7 +17,10 @@ class AccountPackageItemsRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
-            ->schema([]);
+            ->schema([
+                Forms\Components\TextInput::make('name'),
+                Forms\Components\TextInput::make('erp_id')
+            ]);
     }
 
     public function table(Table $table): Table
@@ -47,6 +50,7 @@ class AccountPackageItemsRelationManager extends RelationManager
                 ]),
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->withoutGlobalScopes([
+
                 SoftDeletingScope::class,
             ]));
     }

@@ -6,8 +6,10 @@ use App\Filament\Resources\AccountPackageSealResource\Pages;
 use App\Filament\Resources\AccountPackageSealResource\RelationManagers;
 use App\Models\Account;
 use App\Models\AccountPackage;
+use App\Models\AccountPackageItem;
 use App\Models\AccountPackageSeal;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -49,6 +51,10 @@ class AccountPackageSealResource extends Resource
                 Forms\Components\TextInput::make('erp_id'),
                 Forms\Components\TextInput::make('external_id'),
                 Forms\Components\TextInput::make('external_name'),
+                Select::make('account_package_items')
+                    ->relationship('account_package_items', 'name')
+                    ->multiple()
+                    ->preload(),
             ]);
     }
 

@@ -7,6 +7,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -53,6 +54,10 @@ class AccountPackageItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('external_id'),
                 Tables\Columns\TextColumn::make('type'),
+                TextColumn::make('account_package_seals_count')
+                        ->counts('account_package_seals')
+                        ->badge()
+                        ->label(__('In Seals')),
                 Tables\Columns\TextColumn::make('synched_at')->dateTime(),
 
             ])

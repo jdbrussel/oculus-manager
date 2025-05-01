@@ -76,7 +76,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     }
 
     public function client(): BelongsToMany {
-        return $this->BelongsToMany(Client::class)->where('is_active', true);
+        return $this->belongsToMany(Client::class)->where('is_active', true);
     }
     public function clients() : BelongsToMany {
         return $this->belongsToMany(Client::class)->where('is_active', true);

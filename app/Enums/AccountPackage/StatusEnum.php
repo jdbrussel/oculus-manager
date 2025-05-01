@@ -41,7 +41,7 @@ enum StatusEnum : string implements HasLabel
             self::ORDER_PRODUCED => 'heroicon-o-printer',
             self::ORDER_IN_FULFILMENT => 'heroicon-o-arrow-up-on-square-stack',
             self::ORDER_DELIVERED => 'heroicon-o-building-storefront',
-            self::ORDER_CLOSED => 'heroicon-o-archive-box-x-mark',
+            self::ORDER_CLOSED => 'heroicon-o-lock-closed',
         };
     }
 
@@ -129,7 +129,7 @@ enum StatusEnum : string implements HasLabel
 
         return match($this) {
             self::ORDER_PENDING => 'heroicon-o-archive-box-arrow-down',
-            self::ORDER_OPEN => 'heroicon-o-archive-box-x-mark',
+            self::ORDER_OPEN => 'heroicon-o-lock-closed',
             self::ORDER_PRE_PRODUCTION => 'heroicon-o-printer',
             self::ORDER_IN_PRODUCTION => 'heroicon-o-arrow-up-on-square-stack',
             self::ORDER_PRODUCED => 'heroicon-o-arrow-up-on-square-stack',

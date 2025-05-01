@@ -22,6 +22,10 @@ return new class extends Migration
             $table->softDeletes();
         });
 
+        Schema::create('account_package_seal_account_package_item', function (Blueprint $table) {
+            $table->foreignId('account_package_item_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('account_package_seal_id')->constrained()->cascadeOnDelete();
+        });
 
     }
 
@@ -31,6 +35,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('account_package_seals');
-
+        Schema::dropIfExists('account_package_seal_account_package_item');
     }
 };

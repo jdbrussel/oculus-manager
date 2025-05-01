@@ -44,7 +44,7 @@ class Account extends Model
      */
 
     public function client(): BelongsTo {
-        return $this->BelongsTo(Client::class);
+        return $this->belongsTo(Client::class);
     }
 
     /*
@@ -55,11 +55,11 @@ class Account extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function created_user() : belongsTo {
+    public function created_user() : BelongsTo {
         return $this->belongsTo(User::class, 'created_by_user');
     }
 
-    public function updated_user() : belongsTo {
+    public function updated_user() : BelongsTo {
         return $this->belongsTo(User::class, 'updated_by_user');
     }
 
@@ -69,7 +69,7 @@ class Account extends Model
      */
 
     public function modules(): BelongsToMany {
-        return  $this->BelongsToMany(Module::class);
+        return  $this->belongsToMany(Module::class);
     }
 
     /*
@@ -77,7 +77,7 @@ class Account extends Model
      */
 
     public function account_contacts(): HasMany {
-        return $this->HasMany(AccountContact::class);
+        return $this->hasMany(AccountContact::class);
     }
 
     /*
@@ -85,7 +85,7 @@ class Account extends Model
      */
 
     public function account_addresses(): HasMany {
-        return $this->HasMany(AccountAddress::class);
+        return $this->hasMany(AccountAddress::class);
     }
 
     /*
@@ -93,7 +93,7 @@ class Account extends Model
      */
 
     public function account_packages(): HasMany {
-        return $this->HasMany(AccountPackage::class);
+        return $this->hasMany(AccountPackage::class);
     }
 
 //    public function account_package_seals(): HasManyThrough {
@@ -106,7 +106,7 @@ class Account extends Model
      */
 
     public function calloff_articles(): HasMany {
-        return $this->HasMany(AccountCalloffArticle::class);
+        return $this->hasMany(AccountCalloffArticle::class);
     }
 
 

@@ -59,13 +59,13 @@ class AccountPackageItem extends Model
      * AccountPackage
      */
 
-    public function accountPackage() : BelongsTo
+    public function account_package() : BelongsTo
     {
         return $this->belongsTo(AccountPackage::class);
     }
 
     public function account_package_seals(): BelongsToMany
     {
-        return $this->BelongsToMany(AccountPackageSeal::class);
+        return $this->belongsToMany(AccountPackageSeal::class);
     }
 }

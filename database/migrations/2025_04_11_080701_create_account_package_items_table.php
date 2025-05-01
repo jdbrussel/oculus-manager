@@ -44,10 +44,6 @@ return new class extends Migration
             $table->foreignId('account_package_seal_id')->constrained()->cascadeOnDelete();
         });
 
-        Schema::create('account_package_item_account_package_box', function (Blueprint $table) {
-            $table->foreignId('account_package_item_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('account_package_box_id')->constrained()->cascadeOnDelete();
-        });
     }
 
     /**
@@ -57,6 +53,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('account_package_items');
         Schema::dropIfExists('account_package_item_account_package_seal');
-        Schema::dropIfExists('account_package_item_account_package_box');
+
     }
 };

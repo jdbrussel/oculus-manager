@@ -35,7 +35,7 @@ class Client extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function created_user() : belongsTo {
+    public function created_user() : BelongsTo {
         return $this->belongsTo(User::class, 'created_by_user');
     }
 
@@ -44,7 +44,7 @@ class Client extends Model
      */
 
     public function accounts(): HasMany {
-        return $this->HasMany(Account::class);
+        return $this->hasMany(Account::class);
     }
 
 

@@ -6,6 +6,7 @@ use App\Enums\CountriesEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use phpDocumentor\Reflection\Types\Self_;
 
@@ -52,17 +53,18 @@ class AccountAddress extends Model
     }
 
     /*
-     * DC
+     * DCs
      */
-    public function dc_day() : hasOne
+
+    public function dc_day() : HasOne
     {
         return $this->hasOne(self::class, 'erp_id', 'dc_day_id');
     }
-    public function dc_week() : hasOne
+    public function dc_week() : HasOne
     {
         return $this->hasOne(self::class, 'erp_id', 'dc_week_id');
     }
-    public function dc_theme() : hasOne
+    public function dc_theme() : HasOne
     {
         return $this->hasOne(self::class, 'erp_id', 'dc_theme_id');
     }

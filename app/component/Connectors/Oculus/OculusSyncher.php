@@ -1341,7 +1341,7 @@ class OculusSyncher extends Oculus
                 $allocation[$level_1][$level_2]["{$data['external_id']}"] = $data;
             }
         }
-        dd($allocation);
+
         return $allocation;
     }
 
