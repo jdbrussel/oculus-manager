@@ -70,7 +70,7 @@ class AccountCalloffArticlesRelationManager extends RelationManager
                         GoogleSheetsSyncher::synchAccountCalloffArticles($this->getOwnerRecord());
                     })
                     ->visible(function() {
-                        return array_key_exists('google_sheets', $this->getOwnerRecord()->config['calloff_articles']['external_synchronization']);
+                        return $this->getOwnerRecord()->config['calloff_articles']['external_synchronization']['google_sheets'] ?? false;
                     }),
                 Tables\Actions\Action::make('erp_synchronize')
                     ->label(__('Synch met Oculus'))

@@ -7,6 +7,8 @@ use App\Enums\EnvironmentEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AccountPackageItem extends Model
@@ -60,5 +62,10 @@ class AccountPackageItem extends Model
     public function accountPackage() : BelongsTo
     {
         return $this->belongsTo(AccountPackage::class);
+    }
+
+    public function account_package_seals(): BelongsToMany
+    {
+        return $this->BelongsToMany(AccountPackageSeal::class);
     }
 }

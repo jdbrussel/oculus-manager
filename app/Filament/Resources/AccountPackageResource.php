@@ -21,9 +21,9 @@ use Filament\Tables\Table;
 class AccountPackageResource extends Resource
 {
     protected static ?string $model = AccountPackage::class;
-    protected static ?string $navigationParentItem = 'Accountssd';
+    protected static ?string $navigationGroup = 'Packages';
+    protected static ?int $navigationSort = 1;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
 
     public static function getWidgets(): array
     {
@@ -139,6 +139,8 @@ class AccountPackageResource extends Resource
     {
         return [
             RelationManagers\AccountPackageItemsRelationManager::class,
+            RelationManagers\AccountPackageSealsRelationManager::class,
+            RelationManagers\AccountPackageBoxesRelationManager::class,
         ];
     }
 

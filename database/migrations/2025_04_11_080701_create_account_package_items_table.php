@@ -38,6 +38,16 @@ return new class extends Migration
             $table->timestamp('deleted_at')->nullable();
             $table->foreignId('deleted_at_user')->nullable()->index();
         });
+
+        Schema::create('account_package_item_account_package_seal', function (Blueprint $table) {
+            $table->foreignId('account_package_item_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('account_package_seal_id')->constrained()->cascadeOnDelete();
+        });
+
+        Schema::create('account_package_item_account_package_box', function (Blueprint $table) {
+            $table->foreignId('account_package_item_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('account_package_box_id')->constrained()->cascadeOnDelete();
+        });
     }
 
     /**
@@ -46,5 +56,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('account_package_items');
+        Schema::dropIfExists('account_package_item_account_package_seal');
+        Schema::dropIfExists('account_package_item_account_package_box');
     }
 };

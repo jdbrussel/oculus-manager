@@ -80,4 +80,14 @@ class AccountPackage extends Model
         return $this->hasMany(AccountPackageItem::class);
     }
 
+    public function account_package_seals() : HasMany
+    {
+        return $this->hasMany(AccountPackageSeal::class);
+    }
+
+    public function account_package_boxes() : HasMany
+    {
+        return $this->hasMany(AccountPackageBox::class);
+    }
+
 }

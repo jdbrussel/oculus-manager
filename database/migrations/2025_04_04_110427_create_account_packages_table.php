@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('account_packages', function (Blueprint $table) {
-            $table->id();
 
+            $table->id();
             $table->foreignId('account_id')->constrained()->cascadeOnDelete();
 
             $table->string('erp_id')->unique();
@@ -48,13 +48,12 @@ return new class extends Migration
 
             $table->foreignId('created_by_user')->nullable()->index();
             $table->foreignId('updated_by_user')->nullable()->index();
-
             $table->timestamps();
 
             $table->boolean('pre_delete')->nullable();
-
             $table->timestamp('deleted_at')->nullable();
             $table->foreignId('deleted_at_user')->nullable()->index();
+
         });
     }
 

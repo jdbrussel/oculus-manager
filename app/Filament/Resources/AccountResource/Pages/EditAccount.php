@@ -8,10 +8,24 @@ use App\Filament\Resources\AccountResource;
 use App\Models\Account;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 
 class EditAccount extends EditByUserRecord
 {
     protected static string $resource = AccountResource::class;
+
+    public function getTitle(): string|Htmlable
+    {
+        return "{$this->record->name} ({$this->record->erp_id})";
+    }
+
+    public function getBreadcrumbs(): array
+    {
+       $breadcrumbs = parent::getBreadcrumbs();
+       $breadcrumbs =  array_slice($breadcrumbs, 0, 1);
+       $breadcrumbs[] = $this->record->name;
+       return  $breadcrumbs;
+    }
 
     public function hasCombinedRelationManagerTabsWithContent(): bool
     {
@@ -21,6 +35,9 @@ class EditAccount extends EditByUserRecord
     {
         return $this->record->name;
     }
+
+
+
     public function getContentTabIcon(): ?string
     {
         return 'heroicon-o-briefcase';

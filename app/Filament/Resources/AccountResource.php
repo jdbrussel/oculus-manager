@@ -26,6 +26,11 @@ class AccountResource extends Resource
     protected static ?string $model = Account::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getBreadcrumb(): string
+    {
+        return __('Accounts');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

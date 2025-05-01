@@ -15,7 +15,10 @@ class AccountPackageWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make(__('Pakket :erp_id', [ 'erp_id' => $this->record->erp_id ]), "{$this->record->edition} {$this->record->year}")
+            Stat::make(__(':type (:erp_id)', [
+                'type' => "{$this->record->type->getLabel()}",
+                'erp_id' => $this->record->erp_id
+            ]), "{$this->record->edition} {$this->record->year}")
                 ->description(
                     __(':from t/m :until' ,
                         [
@@ -25,7 +28,7 @@ class AccountPackageWidget extends BaseWidget
                     )
                 )
                 ->descriptionIcon('heroicon-o-calendar-date-range', IconPosition::Before),
-            Stat::make(__('Inhoud'),
+            Stat::make(__('Inhoud pakket'),
                     __(":count onderdelen",
                     [
                         'count' => $this->record->account_package_items->count()
