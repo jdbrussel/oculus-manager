@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('account_id')->constrained()->cascadeOnDelete();
 
             $table->string('erp_id')->unique();
-            $table->enum('environment', ['production', 'development'])->nullable();
+            $table->string('environment');
             $table->integer('year')->nullable();
 
             $table->string('external_id')->nullable();

@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('dc_theme_id')->nullable()->index();
 
             $table->string('erp_id')->nullable();
-            $table->enum('environment', ['production', 'development'])->nullable();
+            $table->string('environment');
             $table->timestamp('synched_at')->nullable();
             $table->foreignId('synched_at_user')->nullable()->index();
 

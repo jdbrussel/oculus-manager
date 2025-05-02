@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EnvironmentEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,7 @@ class AccountContact extends Model
     protected $fillable = [
         'account_id',
         'erp_id',
+        'environment',
         'external_id',
         'name',
         'email',
@@ -32,6 +34,13 @@ class AccountContact extends Model
         'deleted_by_user',
         'is_active'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'environment' => EnvironmentEnum::class,
+        ];
+    }
 
     /*
      * Account

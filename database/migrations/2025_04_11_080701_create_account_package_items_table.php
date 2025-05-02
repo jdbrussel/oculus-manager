@@ -28,7 +28,7 @@ return new class extends Migration
             $table->integer('quantity_reserved')->default(0)->nullable();
             $table->integer('quantity_stock')->default(0)->nullable();
             $table->jsonb('allocation')->nullable();
-            $table->enum('environment', ['production', 'development'])->nullable();
+            $table->string('environment');
             $table->timestamp('synched_at')->nullable();
             $table->foreignId('synched_at_user')->nullable()->index();
             $table->foreignId('created_by_user')->nullable()->index();

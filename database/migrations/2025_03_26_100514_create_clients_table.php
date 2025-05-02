@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('erp_id')->nullable();
+            $table->string('environment')->nullable();
             $table->foreignId('created_by_user')->nullable()->index();
             $table->foreignId('updated_by_user')->nullable()->index();
             $table->timestamp('synched_at')->nullable();

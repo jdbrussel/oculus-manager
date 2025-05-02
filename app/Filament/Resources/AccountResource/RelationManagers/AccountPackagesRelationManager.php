@@ -4,6 +4,7 @@ namespace App\Filament\Resources\AccountResource\RelationManagers;
 
 use App\component\Connectors\Oculus\OculusSyncher;
 use App\Models\AccountPackage;
+use App\Models\Module;
 use Carbon\Carbon;
 use Filament\Actions\ViewAction;
 use Filament\Forms;
@@ -23,9 +24,33 @@ class AccountPackagesRelationManager extends RelationManager
 
     protected static ?string $icon = 'heroicon-o-cube';
 
-    protected static ?string $title = 'Pakketten';
+    protected static ?string $moduleSlug = 'package-manager';
 
-    protected static ?string $badge = '';
+    public static function module() {
+        return Module::where('slug', self::$moduleSlug)->first();
+    }
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('Pakketten');
+    }
+
+    public static function getBadge(Model $ownerRecord, string $pageClass): string
+    {
+
+        $days_ahead =  self::module()->getConfig('packages_days_ahead', 14);
+
+        $count = $ownerRecord->account_packages->where('environment', $ownerRecord->environment)
+            ->where(
+                'scheduled_delivery_datetime' ,
+                '<=' ,
+                Carbon::now()->addDays((integer) $days_ahead)->timestamp
+            )->count();
+        if ($count > 0) {
+            return $count;
+        }
+        return false;
+    }
 
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
@@ -102,16 +127,14 @@ class AccountPackagesRelationManager extends RelationManager
             ])
             ->modifyQueryUsing(function (Builder $query) {
 
-                $ACCOUNT = $this->getOwnerRecord();
-                $MODULE = $ACCOUNT->modules->where('slug', 'package-manager')->first();
-                $DAYS_AHEAD = $MODULE->config['packages_days_ahead'] ?? 8;
+                $days_ahead =  self::module()->getConfig('packages_days_ahead', '14');
 
                 $query
                     ->where('environment', $this->getOwnerRecord()->environment)
                     ->where(
                         'scheduled_delivery_datetime' ,
                         '<=' ,
-                        Carbon::now()->addDays($DAYS_AHEAD)->timestamp
+                        Carbon::now()->addDays((integer) $days_ahead)->timestamp
                     )
                     ->orderBy('scheduled_delivery_datetime', 'DESC')
                     ->withoutGlobalScopes([SoftDeletingScope::class]);

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CountriesEnum;
+use App\Enums\EnvironmentEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,7 @@ class AccountAddress extends Model
     protected $fillable = [
         'account_id',
         'erp_id',
+        'environment',
         'external_id',
         'address_type',
         'formula',
@@ -41,6 +43,7 @@ class AccountAddress extends Model
 
     protected $casts = [
         'country' => CountriesEnum::class,
+        'environment' => EnvironmentEnum::class,
     ];
 
     /*

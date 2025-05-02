@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ModulesEnum;
 use App\Filament\Resources\AccountPackageBoxResource\Pages;
 use App\Filament\Resources\AccountPackageBoxResource\RelationManagers;
 use App\Models\Account;
@@ -23,7 +24,15 @@ class AccountPackageBoxResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Packages';
+    public static ?string $module = 'package-manager';
+
+    public static function getNavigationGroup(): ?string
+    {
+        if(self::$module) {
+            return ModulesEnum::from(self::$module)->getLabel();
+        }
+        return null;
+    }
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -74,7 +83,10 @@ class AccountPackageBoxResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])->modifyQueryUsing(function ($query) {
+                $query->whereRelation('account_package.account.modules', 'slug', '=', self::$module);
+                return $query;
+            });
     }
 
     public static function getRelations(): array

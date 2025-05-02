@@ -68,6 +68,7 @@ class Oculus extends Http
                     'result' => $account['result']
                 ];
             } else {
+
                 return [
                     'error' => $account['error'],
                     'status' => $account['status_code'],
@@ -103,6 +104,7 @@ class Oculus extends Http
         ]);
 
         if($response->failed()) {
+            dd($response);
             if($response->getStatusCode() == '401') {
                 return [
                     'error' => $response->getReasonPhrase(),

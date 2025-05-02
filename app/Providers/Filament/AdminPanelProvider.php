@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Enums\ModulesEnum;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -49,7 +50,9 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Accounts'),
                 NavigationGroup::make()
-                    ->label('Packages'),
+                    ->label(ModulesEnum::from('package-manager')->getLabel()),
+                NavigationGroup::make()
+                    ->label(ModulesEnum::from('stock-manager')->getLabel()),
             ])
 //            ->tenant( Client::class, slugAttribute: 'slug')
 //            ->tenantRegistration(RegisterClient::class)

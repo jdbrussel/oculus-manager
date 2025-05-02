@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('erp_id')->nullable();
-            $table->enum('environment', ['production', 'development'])->nullable();
+            $table->string('environment');
             $table->string('erp_status');
 
             $table->jsonb('config')->nullable();

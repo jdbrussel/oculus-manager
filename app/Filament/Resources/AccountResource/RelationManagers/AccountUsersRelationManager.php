@@ -9,6 +9,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AccountUsersRelationManager extends RelationManager
@@ -17,7 +18,22 @@ class AccountUsersRelationManager extends RelationManager
 
 
     protected static ?string $icon = 'heroicon-o-users';
-    protected static ?string $title = 'Gebruikers';
+
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('Gebruikers');
+    }
+    public static function getBadge(Model $ownerRecord, string $pageClass): string
+    {
+        $count = $ownerRecord->users
+            ->where('environment', $ownerRecord->environment)
+            ->count();
+        if ($count > 0) {
+            return $count;
+        }
+        return '';
+    }
+
 
 
     public function form(Form $form): Form

@@ -7,6 +7,7 @@ use App\Enums\EnvironmentEnum;
 use App\Filament\Resources\AccountResource\Pages;
 use App\Filament\Resources\AccountResource\RelationManagers;
 use App\Models\Account;
+use App\Models\Client;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -136,8 +137,24 @@ class AccountResource extends Resource
                     ->badge()
             ])
             ->filters([
+
+                Tables\Filters\SelectFilter::make('client_id')
+                    ->label(__('Client'))
+                    ->options(
+                        Client::all()
+                            ->pluck('name', 'id')
+                    )
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('environment')
+                    ->label(__('Environment'))
+                    ->options(
+                        EnvironmentEnum::class
+                    )
+                    ->searchable()
+                    ->preload(),
                 Tables\Filters\TrashedFilter::make(),
-            ])
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

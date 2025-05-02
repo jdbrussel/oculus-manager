@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('account_package_boxes', function (Blueprint $table) {
             $table->id();
+            $table->string('environment');
             $table->foreignId('account_package_id')->constrained();
             $table->foreignId('erp_id')->nullable();
             $table->string('name');

@@ -4,6 +4,8 @@ namespace App\Filament\Resources\AccountResource\RelationManagers;
 
 use App\component\Connectors\Oculus\OculusSyncher;
 use App\component\Connectors\Google\GoogleSheetsSyncher;
+use App\Models\Module;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -15,15 +17,34 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AccountCalloffArticlesRelationManager extends RelationManager
 {
+
     protected static string $relationship = 'calloff_articles';
 
     protected static ?string $icon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $title = 'Afroep artikelen';
-
+    protected static ?string $moduleSlug = 'stock-manager';
+    public static function module() {
+        return Module::where('slug', self::$moduleSlug)->first();
+    }
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
-        return $ownerRecord->modules->contains('slug', 'stock-manager');
+        if(self::$moduleSlug) {
+            return $ownerRecord->modules->contains('slug', self::$moduleSlug);
+        }
+        return true;
+    }
+    public static function getTitle(Model $ownerRecord, string $pageClass): string
+    {
+        return __('Afroepartikelen');
+    }
+    public static function getBadge(Model $ownerRecord, string $pageClass): string
+    {
+        $count = $ownerRecord->calloff_articles
+            ->where('environment', $ownerRecord->environment)
+            ->count();
+        if ($count > 0) {
+            return $count;
+        }
+        return '';
     }
 
     public function form(Form $form): Form

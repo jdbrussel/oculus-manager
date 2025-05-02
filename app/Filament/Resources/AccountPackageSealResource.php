@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ModulesEnum;
 use App\Filament\Resources\AccountPackageSealResource\Pages;
 use App\Filament\Resources\AccountPackageSealResource\RelationManagers;
 use App\Models\Account;
 use App\Models\AccountPackage;
 use App\Models\AccountPackageItem;
 use App\Models\AccountPackageSeal;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -22,7 +24,16 @@ use Illuminate\Support\Collection;
 class AccountPackageSealResource extends Resource
 {
     protected static ?string $model = AccountPackageSeal::class;
-    protected static ?string $navigationGroup = 'Packages';
+
+    public static ?string $module = 'package-manager';
+
+    public static function getNavigationGroup(): ?string
+    {
+        if(self::$module) {
+            return ModulesEnum::from(self::$module)->getLabel();
+        }
+        return null;
+    }
     protected static ?int $navigationSort = 1;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -64,6 +75,16 @@ class AccountPackageSealResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('account_package.erp_id'),
+                TextColumn::make('account_package_items_count')
+                    ->counts('account_package_items')
+                    ->badge()
+                    ->label('Num Items'),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options([
+                        'draft' => 'Draft',
+                        'reviewing' => 'Reviewing',
+                        'published' => 'Published',
+                    ]),
                 TextColumn::make('account_package.account.name')->badge(),
             ])
             ->filters([
@@ -78,7 +99,10 @@ class AccountPackageSealResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])->modifyQueryUsing(function ($query) {
+                $query->whereRelation('account_package.account.modules', 'slug', '=', self::$module);
+                return $query;
+            });
     }
 
     public static function getRelations(): array

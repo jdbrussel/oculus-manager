@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('department')->nullable();
             $table->string('function')->nullable();
             $table->string('erp_id')->nullable();
-            $table->enum('environment', ['production', 'development'])->nullable();
+            $table->string('environment');
             $table->timestamp('synched_at')->nullable();
             $table->foreignId('synched_at_user')->nullable()->index();
             $table->foreignId('created_by_user')->nullable()->index();

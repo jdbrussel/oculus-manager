@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EnvironmentEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,9 +13,11 @@ class AccountCalloffArticle extends Model
 
     use HasFactory;
     use SoftDeletes;
+
     protected $fillable = [
         'account_id',
         'erp_id',
+        'environment',
         'year',
         'name',
         'external_id',
@@ -28,6 +31,13 @@ class AccountCalloffArticle extends Model
         'deleted_at',
         'synched_at'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'environment' => EnvironmentEnum::class,
+        ];
+    }
 
     /*
      * Account

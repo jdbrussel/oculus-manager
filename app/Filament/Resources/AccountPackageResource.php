@@ -4,12 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Enums\AccountPackage\TypeEnum;
 use App\Enums\EnvironmentEnum;
+use App\Enums\ModulesEnum;
 use App\Filament\Resources\AccountPackageResource\Pages;
 use App\Filament\Resources\AccountPackageResource\RelationManagers;
 use App\Filament\Resources\AccountPackageResource\Widgets\AccountPackageOverview;
 use App\Filament\Resources\AccountPackageResource\Widgets\AccountPackageWidget;
 use App\Models\Account;
 use App\Models\AccountPackage;
+use App\Models\Module;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +23,25 @@ use Filament\Tables\Table;
 class AccountPackageResource extends Resource
 {
     protected static ?string $model = AccountPackage::class;
-    protected static ?string $navigationGroup = 'Packages';
+
+
+    public static ?string $moduleSlug = 'package-manager';
+
+    public static function module() {
+        if(self::$moduleSlug) {
+            return Module::where('slug', self::$moduleSlug)->first();
+        }
+        return false;
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        if(self::$moduleSlug) {
+            return ModulesEnum::from(self::$moduleSlug)->getLabel();
+        }
+        return null;
+    }
+
     protected static ?int $navigationSort = 1;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -112,8 +132,23 @@ class AccountPackageResource extends Resource
                     ->label(__('Aantal onderdelen')),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('account_id')
+                    ->label(__('Account'))
+                    ->options(
+                        Account::whereRelation('modules', 'slug', '=', 'package-manager')
+                            ->pluck('name', 'id')
+                    )
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('environment')
+                    ->label(__('Environment'))
+                    ->options(
+                        EnvironmentEnum::class
+                    )
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\TrashedFilter::make()
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ViewAction::make()->slideOver(),
                 Tables\Actions\EditAction::make()->slideOver(),
@@ -121,16 +156,7 @@ class AccountPackageResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
             ])->modifyQueryUsing(function ($query) {
-
-                $query->where(
-                    'scheduled_delivery_datetime' ,
-                    '<=' ,
-                    Carbon::now()->addDays(14)->timestamp
-                )
-                ->orderBy(
-                    'scheduled_delivery_datetime',
-                    'DESC'
-                );
+                $query->whereRelation('account.modules', 'slug', '=', self::$moduleSlug);
                 return $query;
             });
     }

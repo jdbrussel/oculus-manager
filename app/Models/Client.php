@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EnvironmentEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,10 +24,17 @@ class Client extends Model
         'name',
         'slug',
         'erp_id',
+        'environment',
         'created_by_user',
         'updated_by_user'
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'environment' => EnvironmentEnum::class,
+        ];
+    }
     /*
      * Users
      */

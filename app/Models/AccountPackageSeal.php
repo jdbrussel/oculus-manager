@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EnvironmentEnum;
 use Illuminate\Database\Eloquent\Factories\BelongsToRelationship;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,15 @@ class AccountPackageSeal extends Model
     protected $fillable = [
         'name',
         'account_package_id',
+        'environment',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'environment' => EnvironmentEnum::class,
+        ];
+    }
 
     public function account_package(): BelongsTo
     {
